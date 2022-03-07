@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"stockApi/errors"
@@ -16,8 +17,9 @@ func IsAuth() gin.HandlerFunc {
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"msg": "unauthenticated"})
 			return
 		}
-		err = service.ValidateCookie(cookie)
+		emailUser, err := service.ValidateCookie(cookie)
 		if err == nil {
+			fmt.Println(emailUser)
 			ctx.Next()
 			return
 		}

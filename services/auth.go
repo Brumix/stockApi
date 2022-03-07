@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -47,13 +46,11 @@ func LoginUser(request *core.LoginRequest) (*core.LoginResponse, error) {
 	return t, nil
 }
 
-func ValidateCookie(cookie string) error {
+func ValidateCookie(cookie string) (string, error) {
 	reponse, err := grpcServer.Server.ValidateToken(context.Background(), &core.ValidateRequest{Token: cookie})
 	if err != nil {
-		return err
+		return "", err
 	}
-	if reponse.Status {
-		return nil
-	}
-	return fmt.Errorf("invalid Token")
+
+	return reponse.Username, nil
 }
