@@ -8,13 +8,17 @@ services:
       - "8080:8080"
     depends_on:
       - auth
+    env_file:
+      - ".env"
     networks:
       - apinewtork
     restart: always
 
   auth:
     container_name: "GRPC-AUTH"
-    build: ./AuthServer/HyperMediaAuth/
+    build: ./microservicos/authServer/
+    env_file:
+      - ./microservicos/authServer/.env
     networks:
       - apinewtork
     depends_on:
@@ -23,14 +27,16 @@ services:
 
   database:
     container_name: "POSTGRES_DATABASE"
-    build: ./AuthServer/HyperMediaAuth/database/
+    build: ./microservicos/authServer/database/
     ports:
       - "5432:5432"
     restart: on-failure
+    env_file:
+      - ./microservicos/authServer/database/.env
     networks:
       - apinewtork
     volumes:
-      - /var/lib/docker/volumes/postgres/_data:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql/data
 
 volumes:
   postgres:

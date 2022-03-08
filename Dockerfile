@@ -1,7 +1,5 @@
 FROM golang:alpine
 
-ENV GIN_MODE=debug
-ENV PORT=8080
 
 WORKDIR /go/src
 
