@@ -1,10 +1,10 @@
 package test
 
 import (
-	"HyperMediaStocksAPi/server"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"stockApi/server"
 	"testing"
 )
 
