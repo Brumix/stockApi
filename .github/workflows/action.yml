@@ -41,7 +41,7 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
 
-      ## checks out our code locally so we can work with the files
+      ## checks out our code locally, so we can work with the files
       - name: Checkout code
         uses: actions/checkout@v2
 
