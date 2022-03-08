@@ -35,15 +35,16 @@ jobs:
       ## runs go test ./...
       - name: Test
         run: go test ./test/...
-      merge-branch:
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@master
-          - name: staging
-            uses: devmasx/merge-branch@v1.3.1
-            with:
-              type: now
-              from_branch: dev
-              target_branch: staging
-              github_token: ${{ github.stockApi }}
+
+  merge-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: staging
+        uses: devmasx/merge-branch@v1.3.1
+        with:
+          type: now
+          from_branch: dev
+          target_branch: staging
+          github_token: ${{ github.stockApi }}
 
