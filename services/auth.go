@@ -18,7 +18,7 @@ func init() {
 func initConnection() {
 
 	var conn *grpc.ClientConn
-	conn, err := grpc.Dial(":"+os.Getenv("GRPCPORT"), grpc.WithInsecure())
+	conn, err := grpc.Dial(os.Getenv("GRPC"), grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("GRPC CONECTION FAILD: %s", err)
 	}
