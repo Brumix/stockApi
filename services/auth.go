@@ -46,11 +46,11 @@ func LoginUser(request *core.LoginRequest) (*core.LoginResponse, error) {
 	return t, nil
 }
 
-func ValidateCookie(cookie string) (string, error) {
+func ValidateCookie(cookie string) (*core.User, error) {
 	reponse, err := grpcServer.Server.ValidateToken(context.Background(), &core.ValidateRequest{Token: cookie})
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return reponse.Username, nil
+	return reponse, nil
 }
