@@ -17,9 +17,9 @@ func IsAuth() gin.HandlerFunc {
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"msg": "unauthenticated"})
 			return
 		}
-		emailUser, err := service.ValidateCookie(cookie)
+		claims, err := service.ValidateCookie(cookie)
 		if err == nil {
-			fmt.Println(emailUser)
+			fmt.Println(claims)
 			ctx.Next()
 			return
 		}

@@ -40,7 +40,7 @@ services:
 
 volumes:
   postgres:
-    external: true
+    external: false
 
 networks:
   apinewtork:

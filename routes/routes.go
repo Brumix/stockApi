@@ -16,11 +16,20 @@ func Routes(router *gin.Engine) {
 		auth.POST("/login", controller.Login)
 	}
 
-	stocks := router.Group("/stocks")
-	stocks.Use(middleware.IsAuth())
+	user := router.Group("/user")
+	user.Use(middleware.IsAuth())
 	{
-		stocks.GET("/", controller.Hello)
-		stocks.POST("/changePassword", controller.ChangePassword)
-		stocks.DELETE("/deleteUser", controller.DeleteUser)
+		user.GET("/", controller.Hello)
+		user.POST("/changePassword", controller.ChangePassword)
+		user.DELETE("/deleteUser", controller.DeleteUser)
+	}
+	wallet := router.Group("/wallet")
+	{
+		wallet.GET("/", controller.MicroService)
+		wUser := wallet.Group("/user")
+		{
+			wUser.GET("/", controller.CreateUser)
+
+		}
 	}
 }
