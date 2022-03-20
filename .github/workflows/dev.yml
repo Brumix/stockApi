@@ -3,8 +3,6 @@ name: ACTIONS
 on:
   push:
     branches: [ dev ]
-  pull_request:
-    branches: [ dev ]
 
 jobs:
   test:
@@ -35,4 +33,5 @@ jobs:
       ## runs go test ./...
       - name: Test
         run: go test ./test/...
+
 

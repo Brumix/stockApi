@@ -1,18 +1,17 @@
-# Api Hyper Media
-
+# Stocks Api
 
 # Stock Investments
 #### Easy way to control my investments
 
 ## Technologies
+
 - `Language` [Golang](https://go.dev/)
-    - `Framework`  [Gin](https://gin-gonic.com/)
-- `Database` [MySql](https://www.mysql.com/)
-    - `ORM` [Prisma2.0](https://www.prisma.io/)
-- `Deploy` [MySql](https://www.mysql.com/)
-    - `Deploy Database` [Planet Scale](https://planetscale.com/)
-    - `Aplication` [Docker](https://www.docker.com/)
-    - `Docker` [Heroku](https://devcenter.heroku.com/)
+  - `Framework`  [Gin](https://gin-gonic.com/)
+- `Database` [Postgres](https://www.postgresql.org/)
+  - `ORM` [Gorm](https://gorm.io/)
+- `Deploy`
+  - `Aplication` [Docker](https://www.docker.com/)
+  - `Docker` [Heroku](https://devcenter.heroku.com/)
 
 
 ## Functional Requirements
@@ -30,16 +29,14 @@
     Scalability
        - Load Balancer - Round-Robin
     Security 
-        - JWT - BEARER Token
+        - JWT - BEARER Token - Cookies
     Usability
         - subscriver that updates in real time the stocks ??
     Design
-        - siren
+        - Microservices
 
 # Description
 ### Stock Hyper Media Api
-
-**Creating a [hyper media](https://api.gov.au/standards/national_api_standards/hypermedia.html) api using [siren](https://github.com/kevinswiber/siren) specifications.**
 
 The Api is for investors that will register all their positions and the brokers in what they were made. 
 For that reason the user will need to be registered in the api to insure privacy.
