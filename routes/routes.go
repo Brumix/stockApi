@@ -35,6 +35,10 @@ func Routes(router *gin.Engine) {
 			wStock.POST("/", controller.CreateControler)
 			wStock.PUT("/", controller.UpdateControler)
 			wStock.DELETE("/", controller.DeleteControler)
+			wStock.GET("/data/:name", func(c *gin.Context) {
+				path := strings.Split(c.Request.URL.String(), "/wallet")
+				c.Redirect(http.StatusMovedPermanently, os.Getenv("MICROSERVICE_URL")+path[1])
+			})
 
 		}
 		wBroker := wallet.Group("/broker")
