@@ -2,12 +2,13 @@ version: "3.9"
 
 services:
   api:
-    container_name: "HYPER-MEDIA-API"
+    container_name: "STOCK-API"
     build: .
     ports:
       - "8080:8080"
     depends_on:
       - auth
+      - microservico
     env_file:
       - ".env"
     networks:
@@ -25,12 +26,25 @@ services:
       - database
     restart: always
 
+  microservico:
+    container_name: "MICROSERVICO"
+    build: ./microservicos/stockMicroServico/
+    env_file:
+      - ./microservicos/stockMicroServico/.env
+    ports:
+      - "3000:3000"
+    networks:
+      - apinewtork
+    depends_on:
+      - database
+    restart: always
+
   database:
     container_name: "POSTGRES_DATABASE"
     build: ./microservicos/authServer/database/
     ports:
       - "5432:5432"
-    restart: on-failure
+    restart: always
     env_file:
       - ./microservicos/authServer/database/.env
     networks:
