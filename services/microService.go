@@ -10,11 +10,11 @@ import (
 
 func buildURL(path string) string {
 
-	return fmt.Sprintf("http://%v", os.Getenv("MICROSERVICE_URL")+path)
+	return fmt.Sprintf("%v", os.Getenv("MICROSERVICE_URL")+path)
 }
 
 func HelloMicroService(res *models.Hello) error {
-	response, err := helper.GETRequest(buildURL("/"))
+	response, err := helper.Hello(buildURL("/"))
 	if err != nil {
 		return err
 	}
@@ -23,4 +23,17 @@ func HelloMicroService(res *models.Hello) error {
 		return errJson
 	}
 	return nil
+}
+
+func ParseReponse(path string, method string, request interface{}) (interface{}, error) {
+	response, err := helper.Request(buildURL(path), method, request)
+	if err != nil {
+		return nil, err
+	}
+	var res interface{}
+	errJson := json.Unmarshal(response, &res)
+	if errJson != nil {
+		return nil, errJson
+	}
+	return res, nil
 }

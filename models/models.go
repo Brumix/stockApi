@@ -21,3 +21,7 @@ type Grpc struct {
 	Connection *grpc.ClientConn
 	Server     core.AuthServiceClient
 }
+
+type UserRequest struct {
+	Email string `json:"email"`
+}
