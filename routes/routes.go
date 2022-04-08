@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"os"
 	"stockApi/controller"
@@ -20,8 +21,8 @@ func Routes(router *gin.Engine) {
 	}
 
 	user := router.Group("/user")
-	user.Use(middleware.IsAuth())
 	{
+		user.Use(middleware.IsAuth())
 		user.GET("/", controller.Hello)
 		user.POST("/changePassword", controller.ChangePassword)
 		user.DELETE("/deleteUser", controller.DeleteUser)
@@ -31,34 +32,42 @@ func Routes(router *gin.Engine) {
 		wallet.GET("/", controller.MicroService)
 		wStock := wallet.Group("/stock")
 		{
+
 			wStock.GET("/", controller.GetControler)
 			wStock.POST("/", controller.CreateControler)
 			wStock.PUT("/", controller.UpdateControler)
 			wStock.DELETE("/", controller.DeleteControler)
-			wStock.GET("/data/:name", func(c *gin.Context) {
-				path := strings.Split(c.Request.URL.String(), "/wallet")
-				c.Redirect(http.StatusMovedPermanently, os.Getenv("MICROSERVICE_URL")+path[1])
-			})
-
 		}
+
+		wInfoStock := wallet.Group("/stock")
+		wInfoStock.GET("/data/:name", func(c *gin.Context) {
+			path := strings.Split(c.Request.URL.String(), "/wallet")
+			log.Info("PATH ", os.Getenv("MICROSERVICE_URL")+path[1])
+			c.Redirect(http.StatusMovedPermanently, os.Getenv("FETCH_URL")+path[1])
+		})
+
 		wBroker := wallet.Group("/broker")
 		{
+			wBroker.Use(middleware.IsAdmin())
 			wBroker.GET("/:broker", controller.GetControler)
 			wBroker.GET("/", controller.GetControler)
 			wBroker.POST("/", controller.CreateControler)
 			wBroker.PUT("/", controller.UpdateControler)
 			wBroker.DELETE("/", controller.DeleteControler)
-
 		}
+
 		wStockBroker := wallet.Group("/stockBroker/")
 		{
+			wStockBroker.Use(middleware.IsAdmin())
 			wStockBroker.GET("/broker", controller.GetControler)
 			wStockBroker.GET("/stock", controller.GetControler)
 			wStockBroker.POST("/associate", controller.CreateControler)
 			wStockBroker.DELETE("/disassociate", controller.DeleteControler)
 		}
+
 		wUser := wallet.Group("/user")
 		{
+			wUser.Use(middleware.IsAuth())
 			wUser.GET("/", controller.GetControler)
 			wUser.POST("/", controller.CreateControler)
 			wUser.PUT("/", controller.UpdateControler)
@@ -68,6 +77,7 @@ func Routes(router *gin.Engine) {
 
 		wPosition := wUser.Group("/positions")
 		{
+			wPosition.Use(middleware.IsAuth())
 			wPosition.GET("/", controller.GetControler)
 			wPosition.POST("/", controller.CreateControler)
 			wPosition.DELETE("/", controller.DeleteControler)
@@ -76,6 +86,7 @@ func Routes(router *gin.Engine) {
 		}
 		wResult := wUser.Group("/results")
 		{
+			wResult.Use(middleware.IsAuth())
 			wResult.GET("/", func(c *gin.Context) {
 				path := strings.Split(c.Request.URL.String(), "/wallet")
 				c.Redirect(http.StatusMovedPermanently, os.Getenv("MICROSERVICE_URL")+path[1])

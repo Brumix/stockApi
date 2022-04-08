@@ -5,7 +5,7 @@ services:
     container_name: "STOCK-API"
     build: .
     ports:
-      - "8080:8080"
+      - "8081:8080"
     depends_on:
       - auth
       - microservico
@@ -15,24 +15,25 @@ services:
       - apinewtork
     restart: always
 
-  auth:
-    container_name: "GRPC-AUTH"
-    build: ./microservicos/authServer/
-    env_file:
-      - ./microservicos/authServer/.env
-    networks:
-      - apinewtork
-    depends_on:
-      - database
-    restart: always
-
   microservico:
     container_name: "MICROSERVICO"
     build: ./microservicos/stockMicroServico/
     env_file:
       - ./microservicos/stockMicroServico/.env
     ports:
-      - "3000:3000"
+      - "3001:3000"
+    networks:
+      - apinewtork
+      - fetch_network
+    depends_on:
+      - database
+    restart: always
+
+  auth:
+    container_name: "GRPC-AUTH"
+    build: ./microservicos/authServer/
+    env_file:
+      - ./microservicos/authServer/.env
     networks:
       - apinewtork
     depends_on:
@@ -52,12 +53,14 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
 
+
 volumes:
   postgres:
     external: false
 
 networks:
   apinewtork:
+  fetch_network:
     driver: bridge
 
 
