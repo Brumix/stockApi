@@ -14,6 +14,10 @@ func Routes(router *gin.Engine) {
 
 	router.GET("/", controller.Hello)
 
+	router.NoRoute(func(c *gin.Context) {
+		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
+	})
+
 	auth := router.Group("/auth")
 	{
 		auth.POST("/register", controller.Register)
@@ -32,7 +36,7 @@ func Routes(router *gin.Engine) {
 		wallet.GET("/", controller.MicroService)
 		wStock := wallet.Group("/stock")
 		{
-
+			wStock.Use(middleware.IsAuth())
 			wStock.GET("/", controller.GetControler)
 			wStock.POST("/", controller.CreateControler)
 			wStock.PUT("/", controller.UpdateControler)
@@ -43,7 +47,7 @@ func Routes(router *gin.Engine) {
 		wInfoStock.GET("/data/:name", func(c *gin.Context) {
 			path := strings.Split(c.Request.URL.String(), "/wallet")
 			log.Info("PATH ", os.Getenv("MICROSERVICE_URL")+path[1])
-			c.Redirect(http.StatusMovedPermanently, os.Getenv("FETCH_URL")+path[1])
+			c.Redirect(http.StatusMovedPermanently, os.Getenv("FETCH_URL")+os.Getenv("FETCH_PORT")+path[1])
 		})
 
 		wBroker := wallet.Group("/broker")

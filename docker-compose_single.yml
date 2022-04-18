@@ -1,21 +1,6 @@
 version: "3.9"
 
 services:
-  nginx:
-    container_name: "NGINX"
-    image: nginx
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./nginx:/etc/ngnix/
-    depends_on:
-      - api_1
-      - api_2
-    networks:
-      - apinewtork
-      - fetch_network
-    restart: always
-
   api_1:
     container_name: "STOCK-API_1"
     build: .
@@ -34,27 +19,10 @@ services:
       - apinewtork
     restart: always
 
-  api_2:
-    container_name: "STOCK-API_2"
-    build: .
-    ports:
-      - "8082:8082"
-    environment:
-      - PORT=8082
-      - FETCH_PORT=3002
-      - MICROSERVICE_URL=http://microservico_2
-    depends_on:
-      - auth
-      - microservico_2
-    env_file:
-      - ".env"
-    networks:
-      - apinewtork
-    restart: always
 
   microservico_1:
     container_name: "MICROSERVICE_1"
-    image: brumix/microservico:1.0.0
+    build: ./microservicos/stockMicroServico/
     ports:
       - "3001:3001"
     env_file:
@@ -68,25 +36,10 @@ services:
       - database
     restart: always
 
-  microservico_2:
-    container_name: "MICROSERVICE_2"
-    image: brumix/microservico:1.0.0
-    ports:
-      - "3002:3002"
-    env_file:
-      - ./microservicos/stockMicroServico/.env
-    environment:
-      - PORT=3002
-    networks:
-      - apinewtork
-      - fetch_network
-    depends_on:
-      - database
-    restart: always
 
   auth:
     container_name: "GRPC-AUTH"
-    image: brumix/authserver:1.0.0
+    build: ./microservicos/authServer/
     env_file:
       - ./microservicos/authServer/.env
     networks:
@@ -97,7 +50,7 @@ services:
 
   database:
     container_name: "POSTGRES_DATABASE"
-    image: brumix/database:1.0.0
+    build: ./microservicos/authServer/database/
     ports:
       - "5432:5432"
     restart: always
@@ -107,6 +60,7 @@ services:
       - apinewtork
     volumes:
       - postgres:/var/lib/postgresql/data
+
 
 volumes:
   postgres:

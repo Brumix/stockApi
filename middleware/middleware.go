@@ -5,12 +5,14 @@ import (
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"net/http"
+	"os"
 	"stockApi/errors"
 	service "stockApi/services"
 )
 
 func IsAuth() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		log.Info("PROCESS ", os.Getenv("PORT"))
 		cookie, err := ctx.Cookie("authorization")
 		if err != nil {
 			errors.ErrorMiddleware(" Cookie don't exist ", err)

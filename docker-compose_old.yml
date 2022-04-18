@@ -54,7 +54,7 @@ services:
 
   microservico_1:
     container_name: "MICROSERVICE_1"
-    image: brumix/microservico:1.0.0
+    build: ./microservicos/stockMicroServico/
     ports:
       - "3001:3001"
     env_file:
@@ -70,7 +70,7 @@ services:
 
   microservico_2:
     container_name: "MICROSERVICE_2"
-    image: brumix/microservico:1.0.0
+    build: ./microservicos/stockMicroServico/
     ports:
       - "3002:3002"
     env_file:
@@ -86,7 +86,7 @@ services:
 
   auth:
     container_name: "GRPC-AUTH"
-    image: brumix/authserver:1.0.0
+    build: ./microservicos/authServer/
     env_file:
       - ./microservicos/authServer/.env
     networks:
@@ -97,7 +97,7 @@ services:
 
   database:
     container_name: "POSTGRES_DATABASE"
-    image: brumix/database:1.0.0
+    build: ./microservicos/authServer/database/
     ports:
       - "5432:5432"
     restart: always
@@ -107,6 +107,7 @@ services:
       - apinewtork
     volumes:
       - postgres:/var/lib/postgresql/data
+
 
 volumes:
   postgres:
