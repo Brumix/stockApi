@@ -3,3 +3,9 @@
 .github
 
 microservicos
+
+
+.idea
+
+docker-compose_old.yml
+docker-compose_single.yml

@@ -10,7 +10,7 @@ import (
 
 func buildURL(path string) string {
 
-	return fmt.Sprintf("%v", os.Getenv("MICROSERVICE_URL")+path)
+	return fmt.Sprintf("%v", os.Getenv("MICROSERVICE_URL")+":"+os.Getenv("FETCH_PORT")+path)
 }
 
 func HelloMicroService(res *models.Hello) error {

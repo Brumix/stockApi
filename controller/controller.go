@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os"
 	"stockApi/errors"
 	"stockApi/models"
 	"stockApi/services"
@@ -14,7 +15,7 @@ import (
 func Hello(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, models.Hello{
-		Msg: "Hyper Media Api Stocks",
+		Msg: "Hyper Media Api Stocks " + os.Getenv("NODE"),
 	})
 }
 

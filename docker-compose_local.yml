@@ -18,9 +18,7 @@ services:
 
   api_1:
     container_name: "STOCK-API_1"
-    image: brumix/interface:1.0.0
-    ports:
-      - "8081:8081"
+    build: .
     environment:
       - NODE=NODE1
       - PORT=8081
@@ -37,9 +35,7 @@ services:
 
   api_2:
     container_name: "STOCK-API_2"
-    image: brumix/interface:1.0.0
-    ports:
-      - "8082:8082"
+    build: .
     environment:
       - NODE=NODE2
       - PORT=8082
@@ -56,9 +52,7 @@ services:
 
   microservico_1:
     container_name: "MICROSERVICE_1"
-    image: brumix/microservico:1.0.0
-    ports:
-      - "3001:3001"
+    build: ./microservicos/stockMicroServico/
     env_file:
       - ./microservicos/stockMicroServico/.env
     environment:
@@ -73,9 +67,7 @@ services:
 
   microservico_2:
     container_name: "MICROSERVICE_2"
-    image: brumix/microservico:1.0.0
-    ports:
-      - "3002:3002"
+    build: ./microservicos/stockMicroServico/
     env_file:
       - ./microservicos/stockMicroServico/.env
     environment:
@@ -90,7 +82,7 @@ services:
 
   auth:
     container_name: "GRPC-AUTH"
-    image: brumix/authserver:1.0.0
+    build: ./microservicos/authServer/
     env_file:
       - ./microservicos/authServer/.env
     networks:
@@ -101,7 +93,7 @@ services:
 
   database:
     container_name: "POSTGRES_DATABASE"
-    image: brumix/database:1.0.0
+    build: ./microservicos/authServer/database/
     ports:
       - "5432:5432"
     restart: always

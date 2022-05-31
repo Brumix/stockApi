@@ -18,9 +18,7 @@ services:
 
   api_1:
     container_name: "STOCK-API_1"
-    image: brumix/interface:1.0.0
-    ports:
-      - "8081:8081"
+    build: .
     environment:
       - NODE=NODE1
       - PORT=8081
@@ -37,9 +35,7 @@ services:
 
   api_2:
     container_name: "STOCK-API_2"
-    image: brumix/interface:1.0.0
-    ports:
-      - "8082:8082"
+    build: .
     environment:
       - NODE=NODE2
       - PORT=8082
@@ -56,9 +52,7 @@ services:
 
   microservico_1:
     container_name: "MICROSERVICE_1"
-    image: brumix/microservico:1.0.0
-    ports:
-      - "3001:3001"
+    build: ./microservicos/stockMicroServico/
     env_file:
       - ./microservicos/stockMicroServico/.env
     environment:
@@ -68,14 +62,12 @@ services:
       - apinewtork
       - fetch_network
     depends_on:
-      - database
+      - pgpool
     restart: always
 
   microservico_2:
     container_name: "MICROSERVICE_2"
-    image: brumix/microservico:1.0.0
-    ports:
-      - "3002:3002"
+    build: ./microservicos/stockMicroServico/
     env_file:
       - ./microservicos/stockMicroServico/.env
     environment:
@@ -85,25 +77,55 @@ services:
       - apinewtork
       - fetch_network
     depends_on:
-      - database
+      - pgpool
     restart: always
 
   auth:
     container_name: "GRPC-AUTH"
-    image: brumix/authserver:1.0.0
+    build: ./microservicos/authServer/
+    environment:
+      - HOST=pgpool
+      - PORT=9999
     env_file:
       - ./microservicos/authServer/.env
     networks:
       - apinewtork
     depends_on:
-      - database
+      - pgpool
     restart: always
 
-  database:
-    container_name: "POSTGRES_DATABASE"
-    image: brumix/database:1.0.0
+  pgpool:
+    restart: 'always'
+    image: melvinkcx/rds_pgpool:0.2.8
     ports:
-      - "5432:5432"
+      - "9999:9999"
+      - "9000:9000"
+      - "9694:9694"
+    environment:
+      - DB_NAME=hypermediastockapi
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=pass
+      - MASTER_NODE_HOSTNAME=database_1
+      - REPLICA_NODE_HOSTNAME_0=database_2
+      - CLUSTER_MODE=streaming_replication
+      - NUM_INIT_CHILDREN=2
+      - MAX_POOL=2
+      - ELASTIC_IP=55.55.55.55
+      - SELF_INSTANCE_ID=i-abababab
+      - SELF_PRIVATE_IP=172.33.11.11
+      - STANDBY_INSTANCE_PRIVATE_IP=172.33.33.33
+    depends_on:
+      - database_1
+      - database_2
+    networks:
+      - apinewtork
+      - fetch_network
+
+  database_1:
+    container_name: "POSTGRES_DATABASE_1"
+    build: ./microservicos/authServer/database/
+    ports:
+      - "5433:5432"
     restart: always
     env_file:
       - ./microservicos/authServer/database/.env
@@ -111,6 +133,20 @@ services:
       - apinewtork
     volumes:
       - postgres:/var/lib/postgresql/data
+
+  database_2:
+    container_name: "POSTGRES_DATABASE_2"
+    build: ./microservicos/authServer/database/
+    ports:
+      - "5444:5432"
+    restart: always
+    env_file:
+      - ./microservicos/authServer/database/.env
+    networks:
+      - apinewtork
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
 
 volumes:
   postgres:
