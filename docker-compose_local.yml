@@ -7,7 +7,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./nginx:/etc/ngnix/
+      - ./nginx:/etc/nginx/
     depends_on:
       - api_1
       - api_2
@@ -19,9 +19,8 @@ services:
   api_1:
     container_name: "STOCK-API_1"
     build: .
-    ports:
-      - "8081:8081"
     environment:
+      - NODE=NODE1
       - PORT=8081
       - FETCH_PORT=3001
       - MICROSERVICE_URL=http://microservico_1
@@ -37,9 +36,8 @@ services:
   api_2:
     container_name: "STOCK-API_2"
     build: .
-    ports:
-      - "8082:8082"
     environment:
+      - NODE=NODE2
       - PORT=8082
       - FETCH_PORT=3002
       - MICROSERVICE_URL=http://microservico_2
@@ -55,12 +53,11 @@ services:
   microservico_1:
     container_name: "MICROSERVICE_1"
     build: ./microservicos/stockMicroServico/
-    ports:
-      - "3001:3001"
     env_file:
       - ./microservicos/stockMicroServico/.env
     environment:
       - PORT=3001
+      - NODE=MICROSERVICO1
     networks:
       - apinewtork
       - fetch_network
@@ -71,12 +68,11 @@ services:
   microservico_2:
     container_name: "MICROSERVICE_2"
     build: ./microservicos/stockMicroServico/
-    ports:
-      - "3002:3002"
     env_file:
       - ./microservicos/stockMicroServico/.env
     environment:
       - PORT=3002
+      - NODE=MICROSERVICO2
     networks:
       - apinewtork
       - fetch_network
@@ -107,7 +103,6 @@ services:
       - apinewtork
     volumes:
       - postgres:/var/lib/postgresql/data
-
 
 volumes:
   postgres:

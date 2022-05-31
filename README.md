@@ -11,7 +11,7 @@
   - `ORM` [Gorm](https://gorm.io/)
 - `Deploy`
   - `Aplication` [Docker](https://www.docker.com/)
-  - `Docker` [Heroku](https://devcenter.heroku.com/)
+  - `Docker` [AWS](https://aws.amazon.com/pt/)
 
 
 ## Functional Requirements
@@ -21,8 +21,6 @@
         - store position(buy,sell) [Add,Edit,Delete]
         - centralized wallet
         - real time stocks prices
-        - get news related to the stocks that the user bought
-        - get wallet from famous investors
         - calculate profit or lost for each position
 
 ## Non Functional Requirements

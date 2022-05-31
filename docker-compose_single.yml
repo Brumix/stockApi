@@ -19,7 +19,6 @@ services:
       - apinewtork
     restart: always
 
-
   microservico_1:
     container_name: "MICROSERVICE_1"
     build: ./microservicos/stockMicroServico/
