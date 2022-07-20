@@ -40,3 +40,8 @@ The Api is for investors that will register all their positions and the brokers 
 For that reason the user will need to be registered in the api to insure privacy.
 In the api they will be able to know the current price of every stock,register as many positions as they want in any broker.
 Though the api they will be able to create a subscriber to see updating the price off any stock in real time
+
+## Other Mircoservices
+[Auth Micro service](https://github.com/Brumix/authServer)
+[Stock Node Micro service](https://github.com/Brumix/stockMicroServico)
+
