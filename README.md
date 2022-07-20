@@ -43,5 +43,6 @@ Though the api they will be able to create a subscriber to see updating the pric
 
 ## Other Mircoservices
 [Auth Micro service](https://github.com/Brumix/authServer)
+
 [Stock Node Micro service](https://github.com/Brumix/stockMicroServico)
 
